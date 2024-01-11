@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "name": "T-shirt Wool",
+      "sizes": ["xl"]
+    },
+    {
+      "name": "T-shirt Cotton",
+      "sizes": ["xl", "s", "l"]
+    },
+    {
+      "name": "Funky Beanie",
+      "sizes": ["xs", "s"]
+    },
+    {
+      "name": "Hoodie",
+      "sizes": ["m", "l"]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "petitevue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clear": "rimraf \"./dist\"",
+    "server": "browser-sync start --server \"./dist\" --files \"./dist\"",
+    "scripts:dev": "esbuild --bundle \"./src/js/app.js\" --outfile=\"./dist/js/app.js\"",
+    "scripts:prod": "esbuild --bundle --minify \"./src/js/app.js\" --outfile=\"./dist/js/app.js\"",
+    "copy:html": "copyfiles -u=1 \"./src/*.html\" \"./dist\"",
+    "copy:api": "copyfiles -u=1 \"./src/api/**/*\" \"./dist\"",
+    "watch:html": "onchange \"./src/*.html\" -- npm run copy:html",
+    "watch:scripts": "onchange \"./src/js/**/*\" -- npm run scripts:dev",
+    "watch:api": "onchange \"./src/api/**/*\" -- npm run copy:api",
+    "dev": "npm-run-all --parallel server watch:*",
+    "build": "npm-run-all clear --parallel scripts:prod watch:*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^3.0.2",
+    "copyfiles": "^2.4.1",
+    "esbuild": "^0.19.11",
+    "lodash": "^4.17.21",
+    "npm-run-all": "^4.1.5",
+    "onchange": "^7.1.0",
+    "petite-vue": "^0.4.1",
+    "rimraf": "^5.0.5"
+  }
+}
