@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Petite vue test</title>
+    <script src="js/app.js" type="module"></script>
+  </head>
+  <body>
+    <div @vue:mounted="fetchProducts();" id="app" v-scope>
+      <h1>Products</h1>
+      <form @submit.prevent>
+        <div>
+          <label for="searchField">Search</label>
+          <input
+            id="searchField"
+            type="search"
+            :value="searchQuery"
+            @input="debouncedSearchQuery" />
+        </div>
+        <div>
+          <div>
+            <input
+              v-model="sizes"
+              type="checkbox"
+              id="size-xl"
+              name="sizes[]"
+              value="xl" />
+            <label for="size-xl">Extra Large</label>
+          </div>
+          <div>
+            <input
+              v-model="sizes"
+              type="checkbox"
+              id="size-l"
+              name="sizes[]"
+              value="l" />
+            <label for="size-l">Large</label>
+          </div>
+          <div>
+            <input
+              v-model="sizes"
+              type="checkbox"
+              id="size-m"
+              name="sizes[]"
+              value="m" />
+            <label for="size-m">Medium</label>
+          </div>
+          <div>
+            <input
+              v-model="sizes"
+              type="checkbox"
+              id="size-s"
+              name="sizes[]"
+              value="s" />
+            <label for="size-s">Small</label>
+          </div>
+        </div>
+        <div>
+          <input
+            v-model="sizes"
+            type="checkbox"
+            id="size-xs"
+            name="sizes"
+            value="xs" />
+          <label for="size-xs">Extra Small</label>
+        </div>
+      </form>
+
+      <div v-show="loading">
+        <p>Loading products</p>
+      </div>
+
+      <div v-show="!loading">
+        <div v-show="nbrResults > 0">
+          <p><span v-text="nbrResults"></span> Results</p>
+          <ul>
+            <li v-for="item in filteredProducts" v-text="item.name"></li>
+          </ul>
+        </div>
+        <div v-show="nbrResults === 0">
+          <p>No results found</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

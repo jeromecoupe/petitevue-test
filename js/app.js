@@ -1,26 +1,22 @@
-import { createApp } from "petite-vue";
+// import petite vue
+import { createApp } from "https://unpkg.com/petite-vue?module";
 
-// fonctionne pas
-function debounce1(callback, wait) {
-  let timeoutId = null;
-  return (...args) => {
-    window.clearTimeout(timeoutId);
-    timeoutId = window.setTimeout(() => {
-      callback.apply(null, args);
+/**
+ * Debounce generic function
+ * https://dev.to/yanagisawahidetoshi/boost-your-javascript-performance-with-the-debounce-technique-497i
+ *
+ * @param {*} callback
+ * @param {*} delay
+ * @returns debounced function
+ */
+function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    const context = this;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func.apply(context, args);
     }, wait);
-  };
-}
-
-// fonctionne
-function debounce2(fn, delay) {
-  let timer = null;
-  return function () {
-    let context = this;
-    let args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      fn.apply(context, args);
-    }, delay);
   };
 }
 
@@ -30,13 +26,13 @@ createApp({
   searchQuery: "",
   loading: true,
   sizes: [],
-  debouncedSearchQuery: debounce1(function (event) {
+  debouncedSearchQuery: debounce(function (event) {
     this.searchQuery = event.target.value;
   }, 200),
 
   // initial load
   async fetchProducts() {
-    const data = await fetch("../api/products.json");
+    const data = await fetch("./api/products.json");
     const jsonData = await data.json();
     this.products = jsonData.data;
     this.loading = false;
@@ -48,7 +44,7 @@ createApp({
     let data = this.products;
 
     // handle search
-    if (this.searchQuery.length > 0) {
+    if (this.searchQuery.length) {
       data = data.filter((product) => {
         let productName = product.name.toLowerCase();
         let q = this.searchQuery.toLowerCase();
@@ -56,8 +52,8 @@ createApp({
       });
     }
 
-    // handle size
-    if (this.sizes.length > 0) {
+    // handle sizes
+    if (this.sizes.length) {
       data = data.filter((product) => {
         return this.sizes.some((size) => {
           return product.sizes.includes(size);
@@ -65,8 +61,10 @@ createApp({
       });
     }
 
+    // number of results after filters
     this.nbrResults = data.length;
 
+    // send data back
     return data;
   },
 }).mount("#app");
